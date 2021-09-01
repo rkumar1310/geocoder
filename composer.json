@@ -1,0 +1,25 @@
+{
+    "require": {
+        "slim/slim": "^4.0",
+        "doctrine/orm": "^2.6.2",
+        "symfony/yaml": "2.*",
+        "doctrine/migrations": "^2.1.1",
+        "doctrine/data-fixtures": "^1.3",
+        "league/oauth2-server": "^8.0",
+        "vlucas/phpdotenv": "^3.6",
+        "slim/http": "^0.8.0",
+        "slim/psr7": "^0.6.0",
+        "uma/dic": "^1.0",
+        "fzaninotto/faker": "^1.8",
+        "jsor/doctrine-postgis": "^1.7",
+        "phpunit/phpunit": "^9.5"
+    },
+    "autoload": {
+        "psr-4": {"UMA\\PakDiscounts\\": "app/"}
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    }
+}

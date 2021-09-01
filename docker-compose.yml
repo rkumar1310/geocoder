@@ -1,0 +1,49 @@
+version: '3'
+volumes:
+  pg_data:
+services:
+    web:
+        image: nginx:1.16
+        volumes:
+            - ./.docker/conf/nginx/default.conf:/etc/nginx/conf.d/default.conf
+            - .:/var/www/html
+        ports:
+            - 80:80
+        restart: always
+        depends_on:
+            - php
+            - postgis
+    php:
+        build: .docker
+        restart: always
+        volumes:
+            - ./.docker/conf/php/php.ini:/usr/local/etc/php/conf.d/php.ini
+            - ./.docker/conf/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+            - .:/var/www/html
+    composer:
+        image: composer
+        volumes:
+            - .:/app
+        command: install
+    
+    php-cli:
+        build: .docker/php-cli
+        volumes: 
+            - .:/var/www/html
+        depends_on:
+            - postgis
+    postgis:
+        image: kartoza/postgis
+        volumes:
+          - ./pg_data:/var/lib/postgresql
+          - ./backups:/opt/backups
+        ports:
+          - 5432:5432
+        restart: always
+        environment:
+            - ALLOW_IP_RANGE=0.0.0.0/0
+            - POSTGRES_DBNAME=${DB_NAME}
+            - POSTGRES_USER=${DB_USER}
+            - POSTGRES_PASSWORD=${DB_PASSWORD}
+        command:
+            - echo "starting deploy through DB!"
